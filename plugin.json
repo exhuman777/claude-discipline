@@ -1,0 +1,15 @@
+{
+  "name": "claude-discipline",
+  "version": "1.0.0",
+  "description": "A harness that makes Claude Code disciplined, efficient, and methodical. Skill graph methodology backed by evidence from 3000+ production prompts.",
+  "author": "exhuman",
+  "license": "MIT",
+  "skills": [
+    "skills/audit.md",
+    "skills/verify.md",
+    "skills/efficiency.md",
+    "skills/harness.md",
+    "skills/review.md",
+    "skills/customize.md"
+  ]
+}
