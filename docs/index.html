@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>claude-discipline -- A harness that makes Claude Code disciplined, efficient, and methodical</title>
+<meta name="description" content="Skill graph methodology plugin for Claude Code. Backed by evidence from 3000+ production prompts, 858 sessions, 7 documented failure modes.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0d0b0a;
+    --bg-raised: #151210;
+    --bg-card: #1a1613;
+    --bg-code: #111010;
+    --amber: #e6993a;
+    --orange: #ffb347;
+    --body: #c4a882;
+    --muted: #8a7a66;
+    --dim: #5a4e40;
+    --border: #2a2320;
+    --border-glow: #e6993a33;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    font-size: 15px;
+  }
+
+  body {
+    font-family: 'JetBrains Mono', monospace;
+    background: var(--bg);
+    color: var(--body);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: rgba(13,11,10,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 1.5rem;
+  }
+  nav .nav-inner {
+    max-width: 960px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 48px;
+  }
+  nav .nav-brand {
+    color: var(--amber);
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-decoration: none;
+    letter-spacing: -0.02em;
+  }
+  nav .nav-links {
+    display: flex;
+    gap: 1.2rem;
+    list-style: none;
+  }
+  nav .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.72rem;
+    transition: color 0.2s;
+    letter-spacing: 0.02em;
+  }
+  nav .nav-links a:hover { color: var(--amber); }
+
+  /* LAYOUT */
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+  section {
+    padding: 3rem 0 2rem;
+  }
+  section:first-of-type {
+    padding-top: 5rem;
+  }
+
+  /* TYPOGRAPHY */
+  h2 {
+    color: var(--amber);
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.8rem;
+    letter-spacing: -0.02em;
+  }
+  h2 .dim {
+    color: var(--dim);
+    font-weight: 400;
+  }
+  h3 {
+    color: var(--orange);
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 0.4rem;
+  }
+  p {
+    margin-bottom: 0.6rem;
+    font-size: 0.85rem;
+  }
+  a {
+    color: var(--amber);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  a:hover { color: var(--orange); }
+
+  /* HERO */
+  .hero {
+    text-align: center;
+    padding: 6rem 0 2.5rem;
+  }
+  .hero pre {
+    color: var(--amber);
+    font-size: 0.6rem;
+    line-height: 1.25;
+    margin-bottom: 1rem;
+    display: inline-block;
+    text-align: left;
+  }
+  .hero .tagline {
+    color: var(--body);
+    font-size: 0.9rem;
+    max-width: 550px;
+    margin: 0 auto 1.2rem;
+    font-weight: 300;
+  }
+  .hero .badges {
+    display: flex;
+    gap: 0.6rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 1.2rem;
+  }
+  .badge {
+    display: inline-block;
+    font-size: 0.65rem;
+    padding: 0.2rem 0.6rem;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    color: var(--muted);
+    background: var(--bg-raised);
+  }
+  .badge strong { color: var(--amber); font-weight: 500; }
+  .btn {
+    display: inline-block;
+    padding: 0.5rem 1.6rem;
+    border: 1px solid var(--amber);
+    color: var(--amber);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    font-weight: 500;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: all 0.2s;
+    letter-spacing: 0.02em;
+  }
+  .btn:hover {
+    background: var(--amber);
+    color: var(--bg);
+  }
+
+  /* PROBLEM BULLETS */
+  .problem-list {
+    list-style: none;
+    padding: 0;
+  }
+  .problem-list li {
+    padding: 0.5rem 0 0.5rem 1.2rem;
+    position: relative;
+    font-size: 0.85rem;
+    border-left: 2px solid var(--border);
+  }
+  .problem-list li::before {
+    content: '--';
+    position: absolute;
+    left: -0.2rem;
+    color: var(--dim);
+  }
+  .problem-list li strong {
+    color: var(--orange);
+    font-weight: 500;
+  }
+
+  /* EVIDENCE BLOCK */
+  .evidence-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 0.6rem;
+  }
+  .evidence-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0.7rem 0.8rem;
+    text-align: center;
+  }
+  .evidence-card .num {
+    color: var(--amber);
+    font-size: 1.4rem;
+    font-weight: 700;
+    line-height: 1.2;
+    display: block;
+  }
+  .evidence-card .label {
+    color: var(--muted);
+    font-size: 0.65rem;
+    display: block;
+    margin-top: 0.15rem;
+  }
+
+  /* CODE BLOCKS */
+  pre.code-block {
+    background: var(--bg-code);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0.8rem 1rem;
+    overflow-x: auto;
+    font-size: 0.78rem;
+    line-height: 1.5;
+    color: var(--body);
+    margin-bottom: 0.6rem;
+  }
+  pre.code-block .comment { color: var(--dim); }
+  pre.code-block .cmd { color: var(--orange); }
+  pre.code-block .flag { color: var(--amber); }
+
+  /* TABLES */
+  .table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.78rem;
+  }
+  th {
+    background: var(--bg-card);
+    color: var(--amber);
+    font-weight: 600;
+    text-align: left;
+    padding: 0.5rem 0.7rem;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  td {
+    padding: 0.45rem 0.7rem;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(230,153,58,0.03); }
+  td strong { color: var(--orange); font-weight: 500; }
+  td code {
+    background: var(--bg-code);
+    padding: 0.1rem 0.35rem;
+    border-radius: 3px;
+    font-size: 0.75rem;
+    color: var(--amber);
+  }
+  .mode-num {
+    color: var(--dim);
+    font-size: 0.72rem;
+  }
+
+  /* FAILURE MODE CARDS */
+  .failure-phases {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.6rem;
+    margin-bottom: 1rem;
+  }
+  .phase-col {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0.6rem 0.7rem;
+  }
+  .phase-col h3 {
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--dim);
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .fm-item {
+    padding: 0.35rem 0;
+  }
+  .fm-item .fm-name {
+    color: var(--orange);
+    font-size: 0.78rem;
+    font-weight: 500;
+  }
+  .fm-item .fm-sign {
+    color: var(--muted);
+    font-size: 0.7rem;
+  }
+  .fm-item .fm-fix {
+    color: var(--body);
+    font-size: 0.7rem;
+  }
+  .fm-item + .fm-item {
+    border-top: 1px solid var(--border);
+    margin-top: 0.35rem;
+    padding-top: 0.35rem;
+  }
+
+  /* SKILL GRAPH DIAGRAM */
+  .graph-flow {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr auto 1fr;
+    align-items: center;
+    gap: 0;
+    margin: 1rem 0;
+    text-align: center;
+  }
+  .graph-step {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0.7rem 0.5rem;
+  }
+  .graph-step .step-num {
+    color: var(--amber);
+    font-size: 0.85rem;
+    font-weight: 700;
+    display: block;
+  }
+  .graph-step .step-name {
+    color: var(--orange);
+    font-size: 0.78rem;
+    font-weight: 500;
+    display: block;
+  }
+  .graph-step .step-desc {
+    color: var(--muted);
+    font-size: 0.68rem;
+    display: block;
+    margin-top: 0.15rem;
+  }
+  .graph-arrow {
+    color: var(--dim);
+    font-size: 1.2rem;
+    padding: 0 0.3rem;
+  }
+
+  /* FILE TREE */
+  .file-tree {
+    background: var(--bg-code);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0.8rem 1rem;
+    font-size: 0.72rem;
+    line-height: 1.6;
+    overflow-x: auto;
+    color: var(--muted);
+  }
+  .file-tree .dir { color: var(--amber); font-weight: 500; }
+  .file-tree .file { color: var(--body); }
+  .file-tree .note { color: var(--dim); }
+
+  /* TOKEN FORMULA */
+  .formula-box {
+    background: var(--bg-card);
+    border: 1px solid var(--amber);
+    border-radius: 4px;
+    padding: 1rem 1.2rem;
+    text-align: center;
+    margin: 0.8rem 0;
+  }
+  .formula-box .formula {
+    color: var(--amber);
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+  }
+  .formula-box .formula-note {
+    color: var(--muted);
+    font-size: 0.72rem;
+  }
+
+  /* TEMPLATES */
+  .template-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.6rem;
+  }
+  .template-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0.8rem;
+    text-align: center;
+  }
+  .template-card.recommended {
+    border-color: var(--amber);
+    box-shadow: 0 0 12px rgba(230,153,58,0.08);
+  }
+  .template-card .tier {
+    color: var(--amber);
+    font-size: 0.9rem;
+    font-weight: 600;
+    display: block;
+  }
+  .template-card .rules {
+    color: var(--orange);
+    font-size: 1.6rem;
+    font-weight: 700;
+    display: block;
+    line-height: 1.3;
+  }
+  .template-card .rules-label {
+    color: var(--dim);
+    font-size: 0.65rem;
+    display: block;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.3rem;
+  }
+  .template-card .desc {
+    color: var(--muted);
+    font-size: 0.7rem;
+  }
+  .template-card .rec-badge {
+    display: inline-block;
+    font-size: 0.6rem;
+    padding: 0.1rem 0.4rem;
+    background: var(--amber);
+    color: var(--bg);
+    border-radius: 2px;
+    font-weight: 600;
+    margin-top: 0.3rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 1.5rem 0;
+    text-align: center;
+    margin-top: 2rem;
+  }
+  footer p {
+    color: var(--dim);
+    font-size: 0.7rem;
+  }
+  footer a { color: var(--muted); }
+  footer a:hover { color: var(--amber); }
+
+  /* DIVIDER */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 0;
+  }
+
+  /* SECTION LABEL */
+  .section-num {
+    color: var(--dim);
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 0.2rem;
+  }
+
+  /* ANIMATIONS */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--dim); }
+
+  /* RESPONSIVE */
+  @media (max-width: 700px) {
+    .hero pre { font-size: 0.38rem; }
+    .failure-phases { grid-template-columns: 1fr; }
+    .template-grid { grid-template-columns: 1fr; }
+    .graph-flow { grid-template-columns: 1fr; gap: 0.3rem; }
+    .graph-arrow { transform: rotate(90deg); }
+    .evidence-grid { grid-template-columns: repeat(3, 1fr); }
+    nav .nav-links { gap: 0.6rem; }
+    nav .nav-links a { font-size: 0.65rem; }
+    section { padding: 2rem 0 1.5rem; }
+  }
+  @media (max-width: 480px) {
+    .evidence-grid { grid-template-columns: repeat(2, 1fr); }
+    nav .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="nav-brand">claude-discipline</a>
+    <ul class="nav-links">
+      <li><a href="#problem">Problem</a></li>
+      <li><a href="#evidence">Evidence</a></li>
+      <li><a href="#quickstart">Install</a></li>
+      <li><a href="#failure-modes">Failures</a></li>
+      <li><a href="#skill-graph">Graph</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#tokens">Tokens</a></li>
+      <li><a href="#templates">Templates</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container">
+
+  <!-- HERO -->
+  <section class="hero" id="top">
+    <pre aria-label="discipline ASCII art">
+     _ _          _       _ _
+  __| (_)___  ___(_)_ __ | (_)_ __   ___
+ / _` | / __|/ __| | '_ \| | | '_ \ / _ \
+| (_| | \__ \ (__| | |_) | | | | | |  __/
+ \__,_|_|___/\___|_| .__/|_|_|_| |_|\___|
+                    |_|</pre>
+    <p class="tagline">A harness that makes Claude Code disciplined, efficient, and methodical.</p>
+    <div class="badges">
+      <span class="badge"><strong>format</strong> skill graph</span>
+      <span class="badge"><strong>files</strong> 56 markdown</span>
+      <span class="badge"><strong>evidence</strong> 3000+ prompts</span>
+      <span class="badge"><strong>license</strong> MIT</span>
+    </div>
+    <a href="https://github.com/exhuman777/claude-discipline" class="btn">View on GitHub</a>
+  </section>
+
+  <hr class="divider">
+
+  <!-- THE PROBLEM -->
+  <section id="problem" class="fade-in">
+    <span class="section-num">01</span>
+    <h2>The Problem</h2>
+    <p>Claude Code out of the box is smart but undisciplined:</p>
+    <ul class="problem-list">
+      <li><strong>Burns tokens</strong> -- message 30 costs 31x message 1, most users don't realize this</li>
+      <li><strong>Cuts corners</strong> -- 7 documented failure modes that get worse under context pressure</li>
+      <li><strong>Skips verification</strong> -- says "done" without evidence, writes weak tests that pass on approximations</li>
+    </ul>
+  </section>
+
+  <hr class="divider">
+
+  <!-- THE EVIDENCE -->
+  <section id="evidence" class="fade-in">
+    <span class="section-num">02</span>
+    <h2>The Evidence <span class="dim">-- not theory, distilled from production</span></h2>
+    <div class="evidence-grid">
+      <div class="evidence-card">
+        <span class="num">3,000+</span>
+        <span class="label">production prompts</span>
+      </div>
+      <div class="evidence-card">
+        <span class="num">858</span>
+        <span class="label">sessions audited</span>
+      </div>
+      <div class="evidence-card">
+        <span class="num">7</span>
+        <span class="label">failure modes</span>
+      </div>
+      <div class="evidence-card">
+        <span class="num">20K</span>
+        <span class="label">tokens/turn saved</span>
+      </div>
+      <div class="evidence-card">
+        <span class="num">75%</span>
+        <span class="label">output savings</span>
+      </div>
+      <div class="evidence-card">
+        <span class="num">43</span>
+        <span class="label">rules distilled</span>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- QUICK START -->
+  <section id="quickstart" class="fade-in">
+    <span class="section-num">03</span>
+    <h2>Quick Start</h2>
+    <pre class="code-block"><span class="cmd">/plugin marketplace add</span> exhuman777/claude-discipline
+<span class="cmd">/plugin install</span> claude-discipline
+<span class="comment"># Restart Claude Code</span>
+<span class="cmd">/discipline:customize</span>   <span class="comment"># generate your CLAUDE.md</span></pre>
+    <p style="color: var(--muted); font-size: 0.78rem;">Or copy a template directly:</p>
+    <pre class="code-block"><span class="cmd">cp</span> templates/minimal.CLAUDE.md ~/CLAUDE.md     <span class="comment"># 10 essential rules</span>
+<span class="cmd">cp</span> templates/standard.CLAUDE.md ~/CLAUDE.md    <span class="comment"># 25 rules (recommended)</span>
+<span class="cmd">cp</span> templates/maximal.CLAUDE.md ~/CLAUDE.md     <span class="comment"># full 43 rules</span></pre>
+  </section>
+
+  <hr class="divider">
+
+  <!-- THE 7 FAILURE MODES -->
+  <section id="failure-modes" class="fade-in">
+    <span class="section-num">04</span>
+    <h2>The 7 Failure Modes</h2>
+    <p style="margin-bottom: 0.8rem;">Key insight: agent psychology = human psychology. Same fixes that make humans productive work on agents.</p>
+
+    <div class="failure-phases">
+      <div class="phase-col">
+        <h3>Pre-Task</h3>
+        <div class="fm-item">
+          <div class="fm-name"><span class="mode-num">1.</span> Incomplete Context</div>
+          <div class="fm-sign">Sign: coding without reading files</div>
+          <div class="fm-fix">Fix: read ALL related files first</div>
+        </div>
+        <div class="fm-item">
+          <div class="fm-name"><span class="mode-num">2.</span> Misalignment</div>
+          <div class="fm-sign">Sign: quick fix instead of right fix</div>
+          <div class="fm-fix">Fix: think founder, not contractor</div>
+        </div>
+      </div>
+      <div class="phase-col">
+        <h3>During Task</h3>
+        <div class="fm-item">
+          <div class="fm-name"><span class="mode-num">3.</span> Context Anxiety</div>
+          <div class="fm-sign">Sign: quality drops late in session</div>
+          <div class="fm-fix">Fix: /compact or hand off summary</div>
+        </div>
+        <div class="fm-item">
+          <div class="fm-name"><span class="mode-num">4.</span> Planning Deviations</div>
+          <div class="fm-sign">Sign: A' instead of A</div>
+          <div class="fm-fix">Fix: verify against plan each step</div>
+        </div>
+        <div class="fm-item">
+          <div class="fm-name"><span class="mode-num">5.</span> Complexity Fear</div>
+          <div class="fm-sign">Sign: stubs, "out of scope"</div>
+          <div class="fm-fix">Fix: decompose to sub-100-line tasks</div>
+        </div>
+      </div>
+      <div class="phase-col">
+        <h3>Post-Task</h3>
+        <div class="fm-item">
+          <div class="fm-name"><span class="mode-num">6.</span> Verification Laziness</div>
+          <div class="fm-sign">Sign: "should work", no evidence</div>
+          <div class="fm-fix">Fix: run checks, show output</div>
+        </div>
+        <div class="fm-item">
+          <div class="fm-name"><span class="mode-num">7.</span> Entropy Maximization</div>
+          <div class="fm-sign">Sign: stale docs after changes</div>
+          <div class="fm-fix">Fix: update ALL references</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- SKILL GRAPH -->
+  <section id="skill-graph" class="fade-in">
+    <span class="section-num">05</span>
+    <h2>Skill Graph <span class="dim">-- not a flat list, an interconnected network</span></h2>
+    <p>The agent navigates interconnected methodology files. Each file is one atomic concept with YAML frontmatter, <code style="background:var(--bg-code);padding:0.1rem 0.3rem;border-radius:3px;font-size:0.78rem;color:var(--amber);">[[wikilinks]]</code>, and actionable rules.</p>
+
+    <div class="graph-flow">
+      <div class="graph-step">
+        <span class="step-num">1</span>
+        <span class="step-name">SCAN</span>
+        <span class="step-desc">Read YAML descriptions</span>
+      </div>
+      <span class="graph-arrow">--></span>
+      <div class="graph-step">
+        <span class="step-num">2</span>
+        <span class="step-name">NAVIGATE</span>
+        <span class="step-desc">Follow relevant [[wikilinks]]</span>
+      </div>
+      <span class="graph-arrow">--></span>
+      <div class="graph-step">
+        <span class="step-num">3</span>
+        <span class="step-name">APPLY</span>
+        <span class="step-desc">Use rules from loaded files</span>
+      </div>
+    </div>
+
+    <div class="file-tree"><span class="dir">methodology/</span>
+  <span class="file">index.md</span>                     <span class="note">&lt;- entry point (root MOC)</span>
+  <span class="dir">token-efficiency/</span>            <span class="note">&lt;- 7 files on reducing waste</span>
+    <span class="file">quadratic-cost.md</span>              <span class="note">why message 30 costs 31x message 1</span>
+    <span class="file">cache-management.md</span>            <span class="note">5-minute cache expiry awareness</span>
+    <span class="file">tool-search.md</span>                 <span class="note">ENABLE_TOOL_SEARCH saves 20K/turn</span>
+    <span class="file">output-minimalism.md</span>           <span class="note">caveman principle (75% savings)</span>
+    <span class="file">context-hygiene.md</span>             <span class="note">file read + skill loading discipline</span>
+    <span class="file">model-selection.md</span>             <span class="note">right model for right task</span>
+    <span class="file">session-management.md</span>          <span class="note">fresh chat protocol</span>
+  <span class="dir">agent-discipline/</span>            <span class="note">&lt;- 9 files on failure modes</span>
+  <span class="dir">verification/</span>                <span class="note">&lt;- 4 files on proving it works</span>
+  <span class="dir">planning/</span>                    <span class="note">&lt;- 4 files on thinking before coding</span>
+  <span class="dir">security/</span>                    <span class="note">&lt;- 3 files on never shipping vulns</span>
+  <span class="dir">cross-domain/</span>                <span class="note">&lt;- 3 files connecting everything</span></div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- SKILLS -->
+  <section id="skills" class="fade-in">
+    <span class="section-num">06</span>
+    <h2>Skills <span class="dim">-- 6 entry points into the methodology graph</span></h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Skill</th>
+            <th>Purpose</th>
+            <th>When</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>/discipline:audit</code></td>
+            <td>Pre-task context check</td>
+            <td>Before non-trivial coding</td>
+          </tr>
+          <tr>
+            <td><code>/discipline:verify</code></td>
+            <td>Post-task verification</td>
+            <td>Before any commit or "done" claim</td>
+          </tr>
+          <tr>
+            <td><code>/discipline:efficiency</code></td>
+            <td>Token efficiency advisor</td>
+            <td>Mid-session or every ~15 messages</td>
+          </tr>
+          <tr>
+            <td><code>/discipline:harness</code></td>
+            <td>Failure mode detection</td>
+            <td>When quality feels like it's dropping</td>
+          </tr>
+          <tr>
+            <td><code>/discipline:review</code></td>
+            <td>Methodology-backed code review</td>
+            <td>After completing a feature</td>
+          </tr>
+          <tr>
+            <td><code>/discipline:customize</code></td>
+            <td>CLAUDE.md generator</td>
+            <td>Once, during setup</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- TOKEN EFFICIENCY -->
+  <section id="tokens" class="fade-in">
+    <span class="section-num">07</span>
+    <h2>Token Efficiency</h2>
+
+    <div class="formula-box">
+      <div class="formula">Cost = S x N(N+1) / 2</div>
+      <div class="formula-note">Message 30 costs 31x message 1. Context reloads every turn.</div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Situation</th>
+            <th>Action</th>
+            <th>Savings</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Claude misunderstood</td>
+            <td>Edit original, don't follow up</td>
+            <td>No history stack</td>
+          </tr>
+          <tr>
+            <td>Chat > 15-20 messages</td>
+            <td>Summarize -> new chat -> paste</td>
+            <td>Reset quadratic</td>
+          </tr>
+          <tr>
+            <td>Multiple questions</td>
+            <td>Batch into one prompt</td>
+            <td>2x+ fewer loads</td>
+          </tr>
+          <tr>
+            <td>Simple task</td>
+            <td>Use Haiku model</td>
+            <td>50-70% cheaper</td>
+          </tr>
+          <tr>
+            <td>Going AFK > 5 min</td>
+            <td>Run /compact first</td>
+            <td>Avoid 10x spike</td>
+          </tr>
+          <tr>
+            <td>Tool schemas bloating</td>
+            <td>ENABLE_TOOL_SEARCH=true</td>
+            <td>-20K tokens/turn</td>
+          </tr>
+          <tr>
+            <td>Verbose responses</td>
+            <td>Terse output (45 vs 180 tokens)</td>
+            <td>75% per turn</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- TEMPLATES -->
+  <section id="templates" class="fade-in">
+    <span class="section-num">08</span>
+    <h2>Templates <span class="dim">-- three tiers of CLAUDE.md</span></h2>
+    <div class="template-grid">
+      <div class="template-card">
+        <span class="tier">minimal</span>
+        <span class="rules">10</span>
+        <span class="rules-label">rules</span>
+        <span class="desc">Security, verification, planning basics. For anyone.</span>
+      </div>
+      <div class="template-card recommended">
+        <span class="tier">standard</span>
+        <span class="rules">25</span>
+        <span class="rules-label">rules</span>
+        <span class="desc">Adds token efficiency and failure mode guards. For daily users.</span>
+        <span class="rec-badge">recommended</span>
+      </div>
+      <div class="template-card">
+        <span class="tier">maximal</span>
+        <span class="rules">43</span>
+        <span class="rules-label">rules</span>
+        <span class="desc">Everything, with customizable sections. For power users.</span>
+      </div>
+    </div>
+    <p style="color: var(--muted); font-size: 0.75rem; margin-top: 0.6rem;">Or use <code style="background:var(--bg-code);padding:0.1rem 0.3rem;border-radius:3px;font-size:0.72rem;color:var(--amber);">/discipline:customize</code> for an interactive generator tailored to your workflow.</p>
+  </section>
+
+  <hr class="divider">
+
+  <!-- FOOTER -->
+  <footer>
+    <p>MIT License &middot; Built by <a href="https://github.com/exhuman777">exhuman</a> &middot; <a href="https://github.com/exhuman777/claude-discipline">GitHub</a></p>
+  </footer>
+
+</div>
+
+<script>
+// Fade-in on scroll
+(function() {
+  var els = document.querySelectorAll('.fade-in');
+  if (!els.length) return;
+
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  els.forEach(function(el) { observer.observe(el); });
+})();
+</script>
+
+</body>
+</html>
