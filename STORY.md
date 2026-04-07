@@ -1,10 +1,4 @@
-# I audited 858 Claude Code sessions. Here's what I found.
-
-I spent $1,619 on Claude Code across 28 projects. 3,000+ prompts. 18,903 turns.
-
-I tracked everything -- every wasted token, every cut corner, every time Claude said "done" when it wasn't.
-
-Then I built a system to fix it. It's open source now.
+# I audited hundreds of Claude Code sessions. Here's what I found.
 
 ---
 
