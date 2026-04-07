@@ -1,5 +1,11 @@
 # I audited hundreds of Claude Code sessions. Here's what I found.
 
+I used Claude Code daily across 28 projects. 3,000+ prompts over months of production work.
+
+I tracked everything -- every wasted token, every cut corner, every time Claude said "done" when it wasn't.
+
+Then I built a system to fix it. It's open source now.
+
 ---
 
 ## The problem nobody talks about
@@ -50,7 +56,7 @@ The fix isn't more prompting. It's methodology.
 
 ## What I built
 
-claude-discipline is a skill graph -- not a flat list of rules, but an interconnected network of 68 markdown files the agent navigates using YAML frontmatter and wikilinks.
+claude-discipline is a skill graph -- not a flat list of rules, but an interconnected network of 73 markdown files the agent navigates using YAML frontmatter and wikilinks.
 
 The key insight: progressive disclosure. The agent reads short descriptions first, follows only the relevant paths, and loads only what the current situation needs. Most decisions happen before reading a single full file. This matters because every token of loaded context costs money on every subsequent message.
 

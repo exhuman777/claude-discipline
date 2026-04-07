@@ -27,7 +27,7 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/format-skill_graph-orange?style=flat-square" alt="Format">
-  <img src="https://img.shields.io/badge/files-68_markdown-black?style=flat-square" alt="Files">
+  <img src="https://img.shields.io/badge/files-73_markdown-black?style=flat-square" alt="Files">
   <img src="https://img.shields.io/badge/evidence-3000%2B_prompts-amber?style=flat-square" alt="Evidence">
   <img src="https://img.shields.io/badge/license-MIT-blue?style=flat-square" alt="License">
 </p>
@@ -49,7 +49,7 @@ This isn't theory. It's distilled from real production use:
 
 ```
 3,000+ production prompts    across 28 projects
-  858  sessions audited      18,903 turns / $1,619 spend
+  hundreds of sessions       audited over months of daily use
     7  failure modes         identified, documented, and fixed
   20K  tokens/turn saved     via ENABLE_TOOL_SEARCH (verified)
   75%  output savings        via caveman principle (verified)

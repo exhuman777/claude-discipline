@@ -1,6 +1,6 @@
 ---
 title: claude-discipline methodology
-description: Entry point to the discipline skill graph. 36 interconnected methodology files across 7 clusters, distilled from 3000+ production prompts.
+description: Entry point to the discipline skill graph. 42 interconnected methodology files across 7 clusters, distilled from 3000+ production prompts.
 type: root-moc
 ---
 
@@ -30,7 +30,7 @@ Every claim in this graph traces to a real production failure or a verified opti
 ## Evidence Base
 
 - 3000+ production prompts across 28 projects
-- 858 sessions / 18,903 turns / $1,619 spend audited
+- Hundreds of sessions audited over months of daily use
 - 7 agent failure modes identified and documented
 - ENABLE_TOOL_SEARCH: verified ~20K tokens/turn savings
 - Output minimalism: verified 75% token savings per turn
