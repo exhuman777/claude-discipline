@@ -56,15 +56,20 @@ This isn't theory. It's distilled from real production use:
 
 ## Quick Start
 
+**Claude Code plugin** (full skill graph + slash commands):
 ```bash
 /plugin marketplace add exhuman777/claude-discipline
-/plugin install claude-discipline
+/plugin install claude-discipline@exhuman777-claude-discipline
 # Restart Claude Code
 /discipline:customize   # generate your CLAUDE.md
 ```
 
-Or copy a template directly:
+**Agent Skills** (works with any agent -- Claude Code, Cursor, Copilot, Codex):
+```bash
+npx skills add exhuman777/claude-discipline
+```
 
+**Or copy a template directly:**
 ```bash
 cp templates/minimal.CLAUDE.md ~/CLAUDE.md     # 10 essential rules
 cp templates/standard.CLAUDE.md ~/CLAUDE.md    # 25 rules (recommended)
