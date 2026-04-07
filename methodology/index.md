@@ -1,6 +1,6 @@
 ---
 title: claude-discipline methodology
-description: Entry point to the discipline skill graph. 30 interconnected methodology files across 6 clusters, distilled from 3000+ production prompts.
+description: Entry point to the discipline skill graph. 36 interconnected methodology files across 7 clusters, distilled from 3000+ production prompts.
 type: root-moc
 ---
 
@@ -17,6 +17,7 @@ Every claim in this graph traces to a real production failure or a verified opti
 - [[verification/_moc]] -- prove it works before claiming it works, every time
 - [[planning/_moc]] -- think before code, decompose before building, verify against plan
 - [[security/_moc]] -- never ship vulnerabilities, never expose secrets
+- [[memory/_moc]] -- persistent memory across sessions using the Palace architecture, AAAK compression, and temporal knowledge graphs
 - [[cross-domain/_moc]] -- principles that connect everything: compound returns, entropy, psychology
 
 ## How to Navigate

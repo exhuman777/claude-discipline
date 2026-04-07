@@ -26,7 +26,7 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/format-skill_graph-orange?style=flat-square" alt="Format">
-  <img src="https://img.shields.io/badge/files-56_markdown-black?style=flat-square" alt="Files">
+  <img src="https://img.shields.io/badge/files-68_markdown-black?style=flat-square" alt="Files">
   <img src="https://img.shields.io/badge/evidence-3000%2B_prompts-amber?style=flat-square" alt="Evidence">
   <img src="https://img.shields.io/badge/license-MIT-blue?style=flat-square" alt="License">
 </p>
@@ -40,6 +40,7 @@ Claude Code out of the box is smart but undisciplined:
 - **Burns tokens** -- message 30 costs 31x message 1, most users don't realize this
 - **Cuts corners** -- 7 documented failure modes that get worse under context pressure
 - **Skips verification** -- says "done" without evidence, writes weak tests that pass on approximations
+- **Forgets everything** -- every session starts from zero. Decisions, architecture, debugging insights -- gone
 
 ## The Evidence
 
@@ -78,7 +79,7 @@ cp templates/maximal.CLAUDE.md ~/CLAUDE.md     # full 43 rules
 
 ## Skills
 
-6 skills that enter the methodology graph at the right point:
+7 skills that enter the methodology graph at the right point:
 
 | Skill | Purpose | When |
 |-------|---------|------|
@@ -87,6 +88,7 @@ cp templates/maximal.CLAUDE.md ~/CLAUDE.md     # full 43 rules
 | `/discipline:efficiency` | Token efficiency advisor | Mid-session or every ~15 messages |
 | `/discipline:harness` | Failure mode detection | When quality feels like it's dropping |
 | `/discipline:review` | Methodology-backed code review | After completing a feature |
+| `/discipline:memory` | Session memory persistence | Every ~15 messages, before /compact, session end |
 | `/discipline:customize` | CLAUDE.md generator | Once, during setup |
 
 ## The Methodology
@@ -117,6 +119,12 @@ methodology/
   verification/                <- 4 files on proving it works
   planning/                    <- 4 files on thinking before coding
   security/                    <- 3 files on never shipping vulns
+  memory/                      <- 5 files on persistent memory (MemPalace)
+    palace-architecture.md         spatial organization (wings/halls/rooms)
+    aaak-compression.md            30x lossless compression dialect
+    knowledge-graph.md             temporal fact tracking
+    memory-layers.md               4-layer loading stack (L0-L3)
+    session-persistence.md         save patterns and hooks
   cross-domain/                <- 3 files connecting everything
 ```
 
@@ -174,6 +182,25 @@ Inspired by [arscontexta](https://github.com/agenticnotetaking/arscontexta)'s sk
 
 Each has a dedicated methodology file with causes, signs, and prevention. Key insight: **agent psychology = human psychology.** Same fixes that make humans productive (GTD, TDD, Agile) work on agents.
 
+## Memory (MemPalace Integration)
+
+claude-discipline now includes a full memory methodology based on [MemPalace](https://github.com/milla-jovovich/mempalace) -- the highest-scoring AI memory system ever benchmarked. Open source, MIT licensed, runs entirely local.
+
+**The problem:** Every session starts from zero. Decisions, architecture debates, debugging insights -- gone.
+
+**The solution:** Three innovations adapted into the discipline methodology:
+
+| Concept | What | Impact |
+|---------|------|--------|
+| **Palace Architecture** | Spatial memory: wings (projects), halls (memory types), rooms (topics) | +34% retrieval accuracy from structure alone |
+| **AAAK Compression** | 30x lossless shorthand dialect for AI agents | Months of context in ~120 tokens |
+| **Temporal Knowledge Graph** | Facts with time windows (valid_from/valid_to) | Query what was true at any point in history |
+
+**With MemPalace installed:** Use the MCP server for automated memory filing, search, and compression.
+**Without MemPalace:** Apply the palace methodology manually with any storage (markdown, SQLite, etc.).
+
+See `methodology/memory/` for the full knowledge cluster and `ecosystem/mempalace.md` for the setup guide.
+
 ## Templates
 
 Three tiers of CLAUDE.md:
@@ -193,6 +220,7 @@ claude-discipline works standalone. These complementary plugins extend it:
 | Plugin | Adds | Install |
 |--------|------|---------|
 | [superpowers](https://github.com/obra/superpowers) | TDD, debugging, brainstorming workflows | `/plugin install superpowers` |
+| [MemPalace](https://github.com/milla-jovovich/mempalace) | Palace memory + AAAK compression + knowledge graph | `pip install mempalace` |
 | [claude-mem](https://github.com/thedotmack/claude-mem) | Cross-session memory (SQLite) | `/plugin install claude-mem` |
 | [compound-engineering](https://github.com/EveryInc/compound-engineering-plugin) | Strategic planning pipeline | `/plugin install compound-engineering` |
 | [voicemode](https://github.com/mbailey/voicemode) | Voice input/output (offline) | `/plugin install voicemode` |
