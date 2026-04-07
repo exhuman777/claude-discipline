@@ -16,6 +16,7 @@
 </p>
 
 <p align="center">
+  <a href="STORY.md">Why I Built This</a> &middot;
   <a href="#the-problem">Problem</a> &middot;
   <a href="#quick-start">Quick Start</a> &middot;
   <a href="#skills">Skills</a> &middot;
