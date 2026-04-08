@@ -3,7 +3,7 @@ title: Quadratic Cost Growth
 description: Why message 30 costs 31x message 1. The mathematical foundation for all token efficiency decisions.
 cluster: token-efficiency
 related: [[output-minimalism]], [[session-management]], [[cache-management]]
-source: Community audit (858 sessions, 18,903 turns, $1,619 spend)
+source: Production observation across hundreds of sessions and 3000+ prompts
 ---
 
 # Quadratic Cost Growth

@@ -27,7 +27,7 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/format-skill_graph-orange?style=flat-square" alt="Format">
-  <img src="https://img.shields.io/badge/files-73_markdown-black?style=flat-square" alt="Files">
+  <img src="https://img.shields.io/badge/files-67_markdown-black?style=flat-square" alt="Files">
   <img src="https://img.shields.io/badge/evidence-3000%2B_prompts-amber?style=flat-square" alt="Evidence">
   <img src="https://img.shields.io/badge/license-MIT-blue?style=flat-square" alt="License">
 </p>
@@ -123,7 +123,7 @@ methodology/
   verification/                <- 4 files on proving it works
   planning/                    <- 4 files on thinking before coding
   security/                    <- 3 files on never shipping vulns
-  memory/                      <- 5 files on persistent memory (MemPalace)
+  memory/                      <- 6 files on persistent memory (MemPalace)
     palace-architecture.md         spatial organization (wings/halls/rooms)
     aaak-compression.md            30x lossless compression dialect
     knowledge-graph.md             temporal fact tracking
@@ -213,7 +213,7 @@ Three tiers of CLAUDE.md:
 |----------|-------|-----|
 | `minimal.CLAUDE.md` | 10 | Anyone -- security, verification, planning basics |
 | `standard.CLAUDE.md` | 25 | Daily users -- adds token efficiency, failure mode guards |
-| `maximal.CLAUDE.md` | 43 | Power users -- everything, with customizable sections |
+| `maximal.CLAUDE.md` | 38 | Power users -- full methodology with customizable sections |
 
 Use `/discipline:customize` for an interactive generator that asks about your workflow and produces a tailored CLAUDE.md.
 

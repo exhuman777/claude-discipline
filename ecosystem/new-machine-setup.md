@@ -22,31 +22,40 @@ Create `~/.claude/settings.json`:
 
 ## Step 3: Install claude-discipline
 
+**Option A: Plugin install:**
 ```bash
 claude  # start a session
-/plugin marketplace add exhuman/claude-discipline
-/plugin install claude-discipline
+/plugin marketplace add exhuman777/claude-discipline
+/plugin install claude-discipline@exhuman777-claude-discipline
+```
+
+**Option B: Manual skill install:**
+```bash
+git clone https://github.com/exhuman777/claude-discipline.git
+cp -r claude-discipline/skills/* ~/.claude/skills/
 ```
 
 Restart Claude Code.
 
-## Step 4: Generate Your CLAUDE.md
+## Step 4: Set Up Your CLAUDE.md
 
 ```bash
-/discipline:customize
+/claude-discipline:customize
 ```
 
 Follow the interactive prompts. Or copy a template manually:
 
 ```bash
+git clone https://github.com/exhuman777/claude-discipline.git
+
 # Minimal (10 rules)
-cp ~/.claude/plugins/.../templates/minimal.CLAUDE.md ~/CLAUDE.md
+cp claude-discipline/templates/minimal.CLAUDE.md ~/CLAUDE.md
 
 # Standard (25 rules, recommended)
-cp ~/.claude/plugins/.../templates/standard.CLAUDE.md ~/CLAUDE.md
+cp claude-discipline/templates/standard.CLAUDE.md ~/CLAUDE.md
 
-# Maximal (43 rules)
-cp ~/.claude/plugins/.../templates/maximal.CLAUDE.md ~/CLAUDE.md
+# Maximal (38 rules)
+cp claude-discipline/templates/maximal.CLAUDE.md ~/CLAUDE.md
 ```
 
 ## Step 5: Install Complementary Plugins (Optional)

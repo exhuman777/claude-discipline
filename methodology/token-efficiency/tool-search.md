@@ -27,7 +27,7 @@ This defers tool definitions that exceed 10% of context window. Tools load on-de
 ## Impact
 
 - Context baseline dropped from 45K to 20K tokens
-- Over 858 sessions, estimated 264M tokens saved
+- Over hundreds of sessions, saves ~20K tokens per turn consistently
 - Zero functionality loss -- tools still available, just loaded when called
 
 ## Why This Matters

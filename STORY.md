@@ -56,7 +56,7 @@ The fix isn't more prompting. It's methodology.
 
 ## What I built
 
-claude-discipline is a skill graph -- not a flat list of rules, but an interconnected network of 73 markdown files the agent navigates using YAML frontmatter and wikilinks.
+claude-discipline is a skill graph -- not a flat list of rules, but an interconnected network of 67 markdown files the agent navigates using YAML frontmatter and wikilinks.
 
 The key insight: progressive disclosure. The agent reads short descriptions first, follows only the relevant paths, and loads only what the current situation needs. Most decisions happen before reading a single full file. This matters because every token of loaded context costs money on every subsequent message.
 

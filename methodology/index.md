@@ -1,6 +1,6 @@
 ---
 title: claude-discipline methodology
-description: Entry point to the discipline skill graph. 42 interconnected methodology files across 7 clusters, distilled from 3000+ production prompts.
+description: Entry point to the discipline skill graph. 43 interconnected methodology files across 7 clusters, distilled from 3000+ production prompts.
 type: root-moc
 ---
 

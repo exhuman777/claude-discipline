@@ -20,7 +20,7 @@ One session was caught reading the same file 33 times. Each read added the full 
 
 ## Skill Loading Discipline
 
-42 skills available, 19 used twice or less across 858 sessions. Each loaded skill schema consumes context on every turn.
+Most skills are used rarely. Each loaded skill schema consumes context on every turn.
 
 **Rule: Only invoke skills directly relevant to the current task.** Don't load skills speculatively.
 

@@ -1,6 +1,6 @@
 # CLAUDE.md -- Maximal Discipline
 
-<!-- This is the full 43-rule template. Customize the sections marked CUSTOMIZE. -->
+<!-- 38 generalized rules from the full 43-rule production methodology. Customize the sections marked CUSTOMIZE. -->
 
 ## Identity
 <!-- CUSTOMIZE: Your agent's identity -->

@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>claude-discipline -- A harness that makes Claude Code disciplined, efficient, and methodical</title>
-<meta name="description" content="Skill graph methodology plugin for Claude Code. Backed by evidence from 3000+ production prompts, 858 sessions, 7 documented failure modes.">
+<meta name="description" content="Skill graph methodology plugin for Claude Code. Backed by evidence from 3000+ production prompts, hundreds of sessions, 7 documented failure modes.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -555,7 +555,7 @@
     <p class="tagline">A harness that makes Claude Code disciplined, efficient, and methodical.</p>
     <div class="badges">
       <span class="badge"><strong>format</strong> skill graph</span>
-      <span class="badge"><strong>files</strong> 56 markdown</span>
+      <span class="badge"><strong>files</strong> 67 markdown</span>
       <span class="badge"><strong>evidence</strong> 3000+ prompts</span>
       <span class="badge"><strong>license</strong> MIT</span>
     </div>
@@ -588,7 +588,7 @@
         <span class="label">production prompts</span>
       </div>
       <div class="evidence-card">
-        <span class="num">858</span>
+        <span class="num">100s</span>
         <span class="label">sessions audited</span>
       </div>
       <div class="evidence-card">
@@ -616,14 +616,15 @@
   <section id="quickstart" class="fade-in">
     <span class="section-num">03</span>
     <h2>Quick Start</h2>
+    <p style="color: var(--muted); font-size: 0.78rem; margin-bottom: 0.4rem;"><strong style="color: var(--orange);">As a Claude Code plugin:</strong></p>
     <pre class="code-block"><span class="cmd">/plugin marketplace add</span> exhuman777/claude-discipline
-<span class="cmd">/plugin install</span> claude-discipline
-<span class="comment"># Restart Claude Code</span>
-<span class="cmd">/discipline:customize</span>   <span class="comment"># generate your CLAUDE.md</span></pre>
-    <p style="color: var(--muted); font-size: 0.78rem;">Or copy a template directly:</p>
-    <pre class="code-block"><span class="cmd">cp</span> templates/minimal.CLAUDE.md ~/CLAUDE.md     <span class="comment"># 10 essential rules</span>
-<span class="cmd">cp</span> templates/standard.CLAUDE.md ~/CLAUDE.md    <span class="comment"># 25 rules (recommended)</span>
-<span class="cmd">cp</span> templates/maximal.CLAUDE.md ~/CLAUDE.md     <span class="comment"># full 43 rules</span></pre>
+<span class="cmd">/plugin install</span> claude-discipline@exhuman777-claude-discipline</pre>
+    <p style="color: var(--muted); font-size: 0.78rem; margin-bottom: 0.4rem;"><strong style="color: var(--orange);">Manual skill install:</strong></p>
+    <pre class="code-block"><span class="cmd">git clone</span> https://github.com/exhuman777/claude-discipline.git
+<span class="cmd">cp -r</span> claude-discipline/skills/* ~/.claude/skills/</pre>
+    <p style="color: var(--muted); font-size: 0.78rem; margin-bottom: 0.4rem;"><strong style="color: var(--orange);">Just the CLAUDE.md template:</strong></p>
+    <pre class="code-block"><span class="cmd">git clone</span> https://github.com/exhuman777/claude-discipline.git
+<span class="cmd">cp</span> claude-discipline/templates/standard.CLAUDE.md ~/CLAUDE.md    <span class="comment"># 25 rules (recommended)</span></pre>
   </section>
 
   <hr class="divider">
@@ -723,6 +724,7 @@
   <span class="dir">agent-discipline/</span>            <span class="note">&lt;- 9 files on failure modes</span>
   <span class="dir">verification/</span>                <span class="note">&lt;- 4 files on proving it works</span>
   <span class="dir">planning/</span>                    <span class="note">&lt;- 4 files on thinking before coding</span>
+  <span class="dir">memory/</span>                      <span class="note">&lt;- 6 files on persistent memory (MemPalace)</span>
   <span class="dir">security/</span>                    <span class="note">&lt;- 3 files on never shipping vulns</span>
   <span class="dir">cross-domain/</span>                <span class="note">&lt;- 3 files connecting everything</span></div>
   </section>
@@ -732,7 +734,7 @@
   <!-- SKILLS -->
   <section id="skills" class="fade-in">
     <span class="section-num">06</span>
-    <h2>Skills <span class="dim">-- 6 entry points into the methodology graph</span></h2>
+    <h2>Skills <span class="dim">-- 7 entry points into the methodology graph</span></h2>
     <div class="table-wrap">
       <table>
         <thead>
@@ -767,6 +769,11 @@
             <td><code>/discipline:review</code></td>
             <td>Methodology-backed code review</td>
             <td>After completing a feature</td>
+          </tr>
+          <tr>
+            <td><code>/discipline:memory</code></td>
+            <td>Session memory persistence</td>
+            <td>Every ~15 messages, before /compact, session end</td>
           </tr>
           <tr>
             <td><code>/discipline:customize</code></td>
@@ -862,9 +869,9 @@
       </div>
       <div class="template-card">
         <span class="tier">maximal</span>
-        <span class="rules">43</span>
+        <span class="rules">38</span>
         <span class="rules-label">rules</span>
-        <span class="desc">Everything, with customizable sections. For power users.</span>
+        <span class="desc">Full methodology with customizable sections. For power users.</span>
       </div>
     </div>
     <p style="color: var(--muted); font-size: 0.75rem; margin-top: 0.6rem;">Or use <code style="background:var(--bg-code);padding:0.1rem 0.3rem;border-radius:3px;font-size:0.72rem;color:var(--amber);">/discipline:customize</code> for an interactive generator tailored to your workflow.</p>
