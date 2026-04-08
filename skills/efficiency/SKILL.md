@@ -1,5 +1,5 @@
 ---
-name: discipline-efficiency
+name: efficiency
 description: Token efficiency advisor that analyzes session state and suggests optimizations. Checks message count, context usage, output verbosity, file read patterns, and model selection. Saves tokens and money.
 license: MIT
 metadata:

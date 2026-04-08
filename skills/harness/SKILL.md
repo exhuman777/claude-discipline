@@ -1,19 +1,22 @@
 ---
 name: harness
-description: Agent discipline enforcer. Identifies which of the 7 failure modes you're exhibiting and redirects.
+description: Agent discipline enforcer that detects which of the 7 documented failure modes are active and provides specific redirects. Use when quality feels like it is dropping or as a proactive checkpoint.
+license: MIT
+metadata:
+  author: exhuman
+  version: "1.0"
+  plugin: claude-discipline
 ---
 
 # Discipline Harness
 
 Identify and correct active failure modes.
 
-## Failure Mode Detection
-
-Check for each failure mode by looking at recent behavior:
+## The 7 Failure Modes
 
 ### 1. Incomplete Context
 **Signs:** Starting to code without reading all related files. Making assumptions about function signatures.
-**Redirect:** Stop. Run `/discipline:audit` before continuing.
+**Redirect:** Stop. Run a context audit before continuing.
 
 ### 2. Misalignment
 **Signs:** Implementing the fastest solution rather than the best. Not considering scale or maintainability.
@@ -33,7 +36,7 @@ Check for each failure mode by looking at recent behavior:
 
 ### 6. Verification Laziness
 **Signs:** "It should work." "Tests pass" (without running them). No actual output shown.
-**Redirect:** Run `/discipline:verify`. Show evidence.
+**Redirect:** Run verification. Show evidence.
 
 ### 7. Entropy Maximization
 **Signs:** Changed a function but didn't update the comment. Changed behavior but didn't update docs.
@@ -43,6 +46,8 @@ Check for each failure mode by looking at recent behavior:
 
 State which failure mode(s) are active and the specific redirect action. If none detected, say "No failure modes detected. Proceed."
 
-## Methodology Reference
+## Why This Matters
 
-See: `methodology/agent-discipline/_moc.md` for the full failure modes cluster.
+Agent psychology = human psychology. The same failure modes that affect human developers (rushing under pressure, cutting corners, skipping verification) affect AI agents. This harness catches them in real time.
+
+See the [claude-discipline methodology](https://github.com/exhuman777/claude-discipline) for the full skill graph.

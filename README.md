@@ -58,24 +58,27 @@ This isn't theory. It's distilled from real production use:
 
 ## Quick Start
 
-**Claude Code plugin** (full skill graph + slash commands):
+**As a Claude Code plugin** (7 skills as slash commands):
 ```bash
+# Add the repo as a plugin marketplace
 /plugin marketplace add exhuman777/claude-discipline
+# Install it
 /plugin install claude-discipline@exhuman777-claude-discipline
-# Restart Claude Code
-/discipline:customize   # generate your CLAUDE.md
+# Skills become: /claude-discipline:audit, /claude-discipline:verify, etc.
 ```
 
-**Agent Skills** (works with any agent -- Claude Code, Cursor, Copilot, Codex):
+**Manual skill install** (copy skills into your Claude Code):
 ```bash
-npx skills add exhuman777/claude-discipline
+git clone https://github.com/exhuman777/claude-discipline.git
+cp -r claude-discipline/skills/* ~/.claude/skills/
+# Skills become: /audit, /verify, /efficiency, /harness, /review, /memory, /customize
 ```
 
-**Or copy a template directly:**
+**Just the CLAUDE.md template** (quickest path):
 ```bash
-cp templates/minimal.CLAUDE.md ~/CLAUDE.md     # 10 essential rules
-cp templates/standard.CLAUDE.md ~/CLAUDE.md    # 25 rules (recommended)
-cp templates/maximal.CLAUDE.md ~/CLAUDE.md     # full 43 rules
+git clone https://github.com/exhuman777/claude-discipline.git
+cp claude-discipline/templates/standard.CLAUDE.md ~/CLAUDE.md    # 25 rules (recommended)
+# Or: minimal.CLAUDE.md (10 rules) | maximal.CLAUDE.md (43 rules)
 ```
 
 ## Skills

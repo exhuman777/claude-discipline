@@ -1,6 +1,11 @@
 ---
 name: customize
-description: Interactive CLAUDE.md generator. Walks through questions about your workflow and generates a customized ruleset.
+description: Interactive CLAUDE.md generator that walks through questions about your workflow, domain, team size, and communication style, then generates a customized ruleset from 3 template tiers.
+license: MIT
+metadata:
+  author: exhuman
+  version: "1.0"
+  plugin: claude-discipline
 ---
 
 # CLAUDE.md Customizer
@@ -43,17 +48,22 @@ Ask the user these questions one at a time. Based on answers, select the appropr
 ## Generation
 
 Based on answers:
-1. Select the base template (`templates/minimal.CLAUDE.md`, `standard.CLAUDE.md`, or `maximal.CLAUDE.md`)
+1. Select the base template (minimal, standard, or maximal)
 2. Toggle domain-specific rules on/off
 3. Adjust team/solo settings
 4. Set communication style
 5. Append personal preferences section
-6. Write to `~/CLAUDE.md`
+6. Write to ~/CLAUDE.md
 
 ## Output
 
 "Generated your CLAUDE.md at ~/CLAUDE.md with [N] rules. Here's a summary of what's included: [category list]"
 
-## Templates Reference
+## Templates
 
-See `templates/` directory for the base templates.
+Three tiers available:
+- **minimal.CLAUDE.md** (10 rules) -- security, verification, planning basics
+- **standard.CLAUDE.md** (25 rules) -- adds token efficiency, failure mode guards
+- **maximal.CLAUDE.md** (43 rules) -- full ruleset with customizable sections
+
+See the [claude-discipline methodology](https://github.com/exhuman777/claude-discipline) for the full skill graph.

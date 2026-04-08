@@ -1,5 +1,5 @@
 ---
-name: discipline-memory
+name: memory
 description: Session memory management using the MemPalace architecture. Classifies session knowledge into palace structure (wings/halls/rooms), persists decisions and discoveries, updates temporal knowledge graph. Run periodically (~15 messages), before /compact, and at session end.
 license: MIT
 metadata:

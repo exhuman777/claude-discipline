@@ -105,18 +105,23 @@ Works with or without MemPalace installed. The methodology teaches the principle
 
 Three ways:
 
-1. **Claude Code plugin** (full skill graph + slash commands):
+1. **Claude Code plugin** (7 skills as slash commands):
 ```bash
 /plugin marketplace add exhuman777/claude-discipline
 /plugin install claude-discipline@exhuman777-claude-discipline
 ```
 
-2. **Agent skills** (works with Claude Code, Cursor, Copilot, Codex):
+2. **Manual skill install** (copy into your Claude Code):
 ```bash
-npx skills add exhuman777/claude-discipline
+git clone https://github.com/exhuman777/claude-discipline.git
+cp -r claude-discipline/skills/* ~/.claude/skills/
 ```
 
-3. **Just copy the CLAUDE.md template:**
+3. **Just the CLAUDE.md template:**
+```bash
+git clone https://github.com/exhuman777/claude-discipline.git
+cp claude-discipline/templates/standard.CLAUDE.md ~/CLAUDE.md
+```
 - 10 rules (minimal) -- security, verification, planning basics
 - 25 rules (standard) -- recommended for daily users
 - 43 rules (maximal) -- full methodology for power users

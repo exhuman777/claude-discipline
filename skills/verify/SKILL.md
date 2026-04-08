@@ -1,6 +1,11 @@
 ---
 name: verify
-description: Post-task verification. Prevents premature "done" claims (failure mode 6). Run before any commit or completion claim.
+description: Post-task verification that prevents premature done claims. Runs compilation, tests, feature checks, and blast radius analysis. Run before any commit or completion claim.
+license: MIT
+metadata:
+  author: exhuman
+  version: "1.0"
+  plugin: claude-discipline
 ---
 
 # Verification
@@ -55,7 +60,8 @@ If verification fails at any step:
 - Re-run from that step
 - Do NOT skip to "done"
 
-## Methodology Reference
+## Why This Matters
 
-This skill implements prevention for failure mode 6 (verification laziness).
-See: `methodology/verification/validate-before-claiming.md`
+Verification laziness is failure mode #6. "Should work" is not evidence. Until you've run the check and seen the output, it doesn't work.
+
+See the [claude-discipline methodology](https://github.com/exhuman777/claude-discipline) for the full skill graph.

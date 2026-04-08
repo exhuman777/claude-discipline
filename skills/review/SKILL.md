@@ -1,5 +1,5 @@
 ---
-name: discipline-review
+name: review
 description: Methodology-backed code review that checks code against discipline rules across security, verification, planning adherence, entropy, and efficiency. Goes beyond style checks.
 license: MIT
 metadata:

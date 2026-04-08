@@ -1,5 +1,5 @@
 ---
-name: discipline-audit
+name: audit
 description: Pre-task context audit that prevents incomplete context failures. Verifies all related files are read, checks for contradictions, traces assumptions to source code. Run before any non-trivial coding task.
 license: MIT
 metadata:

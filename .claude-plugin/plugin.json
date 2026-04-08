@@ -1,0 +1,12 @@
+{
+  "name": "claude-discipline",
+  "version": "1.1.0",
+  "description": "A harness that makes Claude Code disciplined, efficient, and methodical. 7 skills, 7 methodology clusters, 43 rules -- each from a real production failure.",
+  "author": {
+    "name": "exhuman",
+    "url": "https://github.com/exhuman777"
+  },
+  "repository": "https://github.com/exhuman777/claude-discipline",
+  "license": "MIT",
+  "keywords": ["discipline", "efficiency", "methodology", "token-optimization", "memory", "mempalace"]
+}
